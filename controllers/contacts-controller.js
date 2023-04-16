@@ -2,14 +2,16 @@ const { cntrWrapper } = require('../utils');
 const { Contact } = require('../models/contact');
 
 const { HttpError } = require('../helpers/HttpError');
+console.log(HttpError);
 
 const getAllContacts = async (req, res) => {
-  const result = await Contact.find();
+  const result = await Contact.find({}, '-createdAt -updatedAt ');
   res.status(200).json(result);
 };
 
 const getContactsById = async (req, res, next) => {
   const { contactId } = req.params;
+
   const result = await Contact.findById(contactId);
 
   if (!result) {

@@ -15,6 +15,7 @@ const {
   validateBody,
   validateUpdate,
   validateFavoriteUpdate,
+  isValidId,
 } = require('../../utils/');
 
 const {
@@ -27,7 +28,7 @@ router.get('/', getAllContacts);
 
 //  Get Contacts by ID
 
-router.get('/:contactId', getContactsById);
+router.get('/:contactId', isValidId, getContactsById);
 
 // Add Contacts
 
@@ -35,14 +36,15 @@ router.post('/', validateBody(addSchema), CreateContact);
 
 // Delete contacts
 
-router.delete('/:contactId', deleteContact);
+router.delete('/:contactId', isValidId, deleteContact);
 
 // Change contact
 
-router.put('/:contactId', validateUpdate(putSchema), changeContacts);
+router.put('/:contactId', isValidId, validateUpdate(putSchema), changeContacts);
 
 router.patch(
   '/:contactId/favorite',
+  isValidId,
   validateFavoriteUpdate(updateFavoritesSchema),
   updateStatusContact
 );
