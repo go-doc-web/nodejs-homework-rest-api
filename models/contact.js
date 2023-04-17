@@ -4,27 +4,24 @@ const { handleMongoosError } = require('../utils');
 
 const numberExample = /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/;
 
-const contactSchema = new Schema(
-  {
-    name: {
-      type: String,
-      lowercase: true,
-      required: [true, 'Set name for contact'],
-    },
-    email: {
-      type: String,
-    },
-    phone: {
-      type: String,
-      math: numberExample,
-    },
-    favorite: {
-      type: Boolean,
-      default: false,
-    },
+const contactSchema = new Schema({
+  name: {
+    type: String,
+    lowercase: true,
+    required: [true, 'Set name for contact'],
   },
-  { versionKey: false, timestamps: true }
-);
+  email: {
+    type: String,
+  },
+  phone: {
+    type: String,
+    math: numberExample,
+  },
+  favorite: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 contactSchema.post('save', handleMongoosError);
 

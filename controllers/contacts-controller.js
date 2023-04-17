@@ -2,10 +2,9 @@ const { cntrWrapper } = require('../utils');
 const { Contact } = require('../models/contact');
 
 const { HttpError } = require('../helpers/HttpError');
-console.log(HttpError);
 
 const getAllContacts = async (req, res) => {
-  const result = await Contact.find({}, '-createdAt -updatedAt ');
+  const result = await Contact.find();
   res.status(200).json(result);
 };
 
@@ -15,7 +14,7 @@ const getContactsById = async (req, res, next) => {
   const result = await Contact.findById(contactId);
 
   if (!result) {
-    throw HttpError(404, `Contact with ${contactId} not found`);
+    throw HttpError(404, `Contact  not found`);
   }
   res.status(200).json(result);
 };
@@ -27,9 +26,9 @@ const CreateContact = async (req, res, next) => {
 
 const deleteContact = async (req, res, next) => {
   const { contactId } = req.params;
-  const result = await Contact.findByIdAndDelete(contactId);
+  const result = await Contact.findByIdAndRemove(contactId);
   if (!result) {
-    throw HttpError(404, `Contact with ${contactId} not found`);
+    throw HttpError(404, `Contact not found`);
   }
   res.status(200).json({ message: 'contact deleted' });
 };
@@ -40,7 +39,7 @@ const changeContacts = async (req, res, next) => {
     new: true,
   });
   if (!result) {
-    throw HttpError(404, `Contact with ${contactId} not found`);
+    throw HttpError(404, `Contact  not found`);
   }
   res.status(200).json(result);
 };
@@ -51,7 +50,7 @@ const updateStatusContact = async (req, res, next) => {
     new: true,
   });
   if (!result) {
-    throw HttpError(404, `Contact with ${contactId} not found`);
+    throw HttpError(404, `Contact not found`);
   }
   res.status(200).json(result);
 };
