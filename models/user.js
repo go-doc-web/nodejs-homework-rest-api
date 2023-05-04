@@ -18,6 +18,7 @@ const userSchema = new Schema(
       math: emailRegexp,
       unique: true,
     },
+
     subscription: {
       type: String,
       enum: subscrEnum,
@@ -26,6 +27,9 @@ const userSchema = new Schema(
     token: {
       type: String,
       default: null,
+    },
+    avatarURL: {
+      type: String,
     },
   },
   { versionKey: false }
