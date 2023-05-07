@@ -1,20 +1,20 @@
-const { Schema, model } = require('mongoose');
-const Joi = require('joi');
-const { handleMongoosError } = require('../utils');
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
+const { handleMongoosError } = require("../utils");
 
 const emailRegexp = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-const subscrEnum = ['starter', 'pro', 'business'];
+const subscrEnum = ["starter", "pro", "business"];
 
 const userSchema = new Schema(
   {
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, "Password is required"],
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
       math: emailRegexp,
       unique: true,
     },
@@ -22,7 +22,7 @@ const userSchema = new Schema(
     subscription: {
       type: String,
       enum: subscrEnum,
-      default: 'starter',
+      default: "starter",
     },
     token: {
       type: String,
@@ -31,11 +31,19 @@ const userSchema = new Schema(
     avatarURL: {
       type: String,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { versionKey: false }
 );
 
-userSchema.post('save', handleMongoosError);
+userSchema.post("save", handleMongoosError);
 
 const usersSchema = Joi.object({
   password: Joi.string().min(6).required(),
@@ -44,10 +52,15 @@ const usersSchema = Joi.object({
   token: Joi.string(),
 });
 
-const User = model('user', userSchema);
+const emailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required(),
+});
+
+const User = model("user", userSchema);
 
 const schemas = {
   usersSchema,
+  emailSchema,
 };
 
 module.exports = {
